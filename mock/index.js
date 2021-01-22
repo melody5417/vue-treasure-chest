@@ -1,3 +1,4 @@
+// https://github.com/nuysoft/Mock/wiki
 const Mock = require('mockjs');
 import studentsData from './students';
 
