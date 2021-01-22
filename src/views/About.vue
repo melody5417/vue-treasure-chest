@@ -1,26 +1,30 @@
 <template>
   <div class="about">
     <h1>About</h1>
-    <p @click="handleClick">About page content</p>
+    <p @click="handleClickToTestMock">Click me</p>
+    <div :v-if="content.length > 0">{{content}}</div>
   </div>
 </template>
 
 <script>
-import { queryList } from '@/api/test'
+import { queryStudents } from '@/api/test'
 
 export default {
   name: 'About',
   components: {
   },
+  data() {
+    return {
+      content: ''
+    }
+  },
   methods: {
     handleClick() {
       const params = {
-        pageNum: 1,
-        pageSize: 10,
-        userId: "XXX"
+        class: 'senior'
       };
-      queryList(params).then(rsp => {
-        console.log(rsp);
+      queryStudents(params).then(rsp => {
+        this.content = JSON.stringify(rsp);
       });
     }
   }

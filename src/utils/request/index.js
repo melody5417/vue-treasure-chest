@@ -54,16 +54,16 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data;
-    const { code, errMsg } = res;
-    
+    const { errCode, errMsg } = res;
+
     // 如果自定义代码不是0，则判断为错误。
-    if (code !== 0) {
-      return Promise.reject(new Error(errMsg || "Internal error"));
+    if (errCode !== 0) {
+      return Promise.reject(new Error(`errCode: ${errCode}, errMsg: ${errMsg || 'Internal error'}`));
     }
     return res;
   },
   (error) => {
-    console.log(`err${error}`);
+    console.log(`err ${error}`);
     return Promise.reject(error);
   }
 );

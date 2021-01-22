@@ -1,9 +1,15 @@
 import request from '@/utils/request';
 
-export function queryList(params) {
-  return request({
-    url: '/XXXX',
+const enableMock = true;
+
+export function queryStudents(params) {
+  const options = {
+    url: '/queryStudents',
     method: 'post',
-    params
-  });
+    data: params
+  };
+  if (enableMock) {
+    options.baseURL = '';
+  }
+  return request(options);
 }
