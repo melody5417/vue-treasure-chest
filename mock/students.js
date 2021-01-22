@@ -17,6 +17,6 @@ function students(res = {}) {
 }
 export default {
     url: '/queryStudents',
-    method: 'post',
+    type: 'post',
     data: students
 }
