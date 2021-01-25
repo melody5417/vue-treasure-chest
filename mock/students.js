@@ -15,8 +15,10 @@ function students(res = {}) {
   const rsp = {errCode: 0, data: data};
   return rsp;
 }
-export default {
+const queryStudents = {
     url: '/queryStudents',
     type: 'post',
     data: students
-}
+};
+export default [queryStudents];
+
