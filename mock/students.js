@@ -8,22 +8,20 @@ const queryStudentsData = {
   type: "post",
   data: (res = {}) => {
     const opt = JSON.parse(res.body);
-    if (studentsData.length == 0) {
-      const data = [];
-      for (let i = 0; i < 20; i++) {
-        const student = {
-          id: Random.id(),
-          name: Random.cname(),
-          address: Random.city(),
-          class: opt.class,
-        };
-        data.push(student);
-      }
-      studentsData.push(...data);
+    let result = [...studentsData];
+    if (opt.name && opt.name.length > 0) {
+      result = result.filter((item) => {
+        item.name === opt.name;
+      });
     }
-    const rsp = { errCode: 0, data: studentsData };
+    if (opt.class && opt.class.length > 0) {
+      result = result.filter((item) => {
+        item.class === opt.class;
+      });
+    }
+    const rsp = { errCode: 0, data: result };
     return rsp;
-  }
+  },
 };
 
 const addStudentData = {
@@ -31,28 +29,30 @@ const addStudentData = {
   type: "post",
   data: (res = {}) => {
     const opt = JSON.parse(res.body);
-    if (opt.name.length > 0) {
-      const student = {
-        id: Random.id(),
-        name: opt.name,
-        address: Random.city(),
-        class: opt.class,
-      };
-      studentsData.push(student);
-    }
+    const student = {
+      id: Random.id(),
+      name: Random.cname(),
+      address: Random.city(),
+      class: opt.class,
+    };
+    studentsData.push(student);
     const rsp = { errCode: 0, data: studentsData };
     return rsp;
-  }
+  },
 };
 
 const deleteStudentData = {
   url: "/deleteStudent",
   type: "post",
   data: () => {
-    studentsData.splice(0, 1);
-    const rsp = { errCode: 0, data: studentsData };
-    return rsp;
-  }
+    if (studentsData && studentsData.length > 0) {
+      studentsData.splice(0, 1);
+      const rsp = { errCode: 0, data: studentsData };
+      return rsp;
+    } else {
+      return { errCode: -1, errMsg: "无有效数据" };
+    }
+  },
 };
 
 export default [queryStudentsData, addStudentData, deleteStudentData];

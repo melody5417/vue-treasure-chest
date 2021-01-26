@@ -1,27 +1,21 @@
 import axios from "axios";
+import { Message } from 'element-ui';
+import { serverABaseURL } from './config';
 import * as verifyUtil from './verification';
 
 /**
- * 后台服务全局字段规定：
- * header：
- *  _checksum ：使用body的参数，排序，计算MD5
- * body：
+ * 后台服务全局字段规定:
+ * header:
+ *  _checksum : 使用body的参数，排序，计算MD5
+ * body:
  *  _t    : 必填，系统请求时间，通过getTime接口获取系统时间
  *  _token: 必填，用户鉴权的标识，需要第三方
  *  _requestId: 必填，请求ID，随机字符串，保证每次唯一，排查问题的依据
  */
 
-// let baseURL = () => {
-//   let url = "XXXX.com";
-//   // if (dev === 'prod') {
-//   //     url = "sina.com";
-//   // }
-//   return url;
-// };
-
 // 创建一个axios实例
 const service = axios.create({
-  baseURL: "https://XXXX.com",
+  baseURL: serverABaseURL(),  // 默认baseURL
   withCredentials: true, // 跨域请求时发送cookie
   timeout: 5000,
 });
@@ -55,14 +49,22 @@ service.interceptors.response.use(
     const res = response.data;
     const { errCode, errMsg } = res;
 
-    // 如果自定义代码不是0，则判断为错误。
     if (errCode !== 0) {
+      Message({
+        message: errMsg || 'Error',
+        type: 'error',
+        duration: 3 * 1000
+      });
       return Promise.reject(new Error(`errCode: ${errCode}, errMsg: ${errMsg || 'Internal error'}`));
     }
     return res;
   },
   (error) => {
-    console.log(`err ${error}`);
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    });
     return Promise.reject(error);
   }
 );
