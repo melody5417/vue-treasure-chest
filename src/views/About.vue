@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { queryStudents, addStudent, deleteStudent } from '@/api/test'
+import { queryStudents, addStudent, deleteStudent } from '@/api/students'
 
 export default {
   name: 'About',

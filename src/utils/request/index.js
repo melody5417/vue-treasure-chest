@@ -30,7 +30,6 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 在发送请求之前做一些处理
-    console.log(config);
     const { data = {}, headers = {} } = config;
     // 1.装配 appId
     data.appId = verifyUtil.getAppId();
