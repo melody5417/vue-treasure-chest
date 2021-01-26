@@ -1,32 +1,46 @@
 <template>
   <div class="about">
-    <h1>About</h1>
-    <p @click="handleClick">Click me</p>
-    <div :v-if="content.length > 0">{{content}}</div>
+    <h1>测试 mock</h1>
+    <p @click="handleQueryClick">Query</p>
+    <p @click="handleAddClick">Add</p>
+    <p @click="handleDeleteClick">Delete</p>
+    <div :v-if="content.length > 0">{{ content }}</div>
   </div>
 </template>
 
 <script>
-import { queryStudents } from '@/api/test'
+import { queryStudents, addStudent, deleteStudent } from '@/api/test'
 
 export default {
   name: 'About',
-  components: {
-  },
+  components: {},
   data() {
     return {
-      content: ''
+      content: '',
     }
   },
   methods: {
-    handleClick() {
+    handleQueryClick() {
       const params = {
-        class: 'senior'
-      };
-      queryStudents(params).then(rsp => {
-        this.content = JSON.stringify(rsp);
-      });
-    }
-  }
-};
+        class: 'senior',
+      }
+      queryStudents(params).then((rsp) => {
+        this.content = JSON.stringify(rsp)
+      })
+    },
+    handleAddClick() {
+      const params = {
+        name: 'sheldon',
+      }
+      addStudent(params).then((rsp) => {
+        this.content = JSON.stringify(rsp)
+      })
+    },
+    handleDeleteClick() {
+      deleteStudent().then((rsp) => {
+        this.content = JSON.stringify(rsp)
+      })
+    },
+  },
+}
 </script>

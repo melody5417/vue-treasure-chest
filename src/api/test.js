@@ -13,3 +13,27 @@ export function queryStudents(params) {
   }
   return request(options);
 }
+
+export function addStudent(params) {
+  const options = {
+    url: '/addStudent',
+    method: 'post',
+    data: params
+  };
+  if (enableMock) {
+    options.baseURL = '';
+  }
+  return request(options);
+}
+
+export function deleteStudent(params) {
+  const options = {
+    url: '/deleteStudent',
+    method: 'post',
+    data: params
+  };
+  if (enableMock) {
+    options.baseURL = '';
+  }
+  return request(options);
+}
