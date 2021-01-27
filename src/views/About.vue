@@ -29,7 +29,7 @@
         />
       </svg>
       <!-- svg_2: 使用 img 标签显示 .svg 文件 -->
-      <img src="@/assets/svg/logo.svg" alt="">
+      <img src="@image/logo.svg" alt="">
       <!-- svg_3: css 作为 background 引入 svg -->
       <div class="logo"></div>
     </div>
@@ -37,7 +37,8 @@
 </template>
 
 <script>
-import { queryStudents, addStudent, deleteStudent } from '@/api/students'
+// alias_2: script中使用
+import { queryStudents, addStudent, deleteStudent } from '@api/students'
 
 export default {
   name: 'About',
@@ -78,6 +79,7 @@ export default {
   width: 113px;
   height: 30px;
   // svg_3: npm install url-loader --save-dev
-  background: url(~@/assets/svg/logo.svg) no-repeat;
+  // alias_3: 注意style中调用前面需要加~
+  background: url(~@image/logo.svg) no-repeat;
 }
 </style>

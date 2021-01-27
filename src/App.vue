@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Header from './components/layout/Header';
+import Header from '@component/layout/Header';
 
 export default {
   name: 'App',

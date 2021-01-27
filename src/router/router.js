@@ -1,6 +1,6 @@
+import Home from "@view/Home.vue";
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "../views/Home.vue";
 
 // 重写push，解决push相同path报错问题
 const originalPush = Router.prototype.push;
@@ -25,7 +25,7 @@ const router = new Router({
     {
       path: "/about",
       name: "about",
-      component: () => import("../views/About.vue"),
+      component: () => import("@view/About.vue"),
       beforeEnter: (to, from, next) => {
         console.log("路由独享的守卫 beforeEnter", to, from, next);
         next();
@@ -37,22 +37,22 @@ const router = new Router({
       // /user/evan/post/123
       path: "/contact/:name?", // 配置可选的路由参数
       name: "contact", // 这种为命名路由 router-link to时可以通过name进行跳转
-      component: () => import("../views/Contact.vue"),
+      component: () => import("@view/Contact.vue"),
     },
     {
       path: "/blog",
       name: "blog",
-      component: () => import("../views/Blog.vue"),
+      component: () => import("@view/Blog.vue"),
     },
     {
       path: "/user",  // id必须输入
-      component: () => import("../views/User.vue"),
+      component: () => import("@view/User.vue"),
       children: [
         {
           // 当 /user/:id/email 匹配成功，
           // Email 会被渲染在 User 的 <router-view> 中
           path: "email",
-          component: () => import("../views/Email.vue"),
+          component: () => import("@view/Email.vue"),
         },
       ],
     },
