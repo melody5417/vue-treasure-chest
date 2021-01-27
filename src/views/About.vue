@@ -75,9 +75,9 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  width: 100px;
-  height: 100px;
-  background: red;
-  background-image: url(../assets/logo);
+  width: 113px;
+  height: 30px;
+  // svg_3: npm install url-loader --save-dev
+  background: url(~@/assets/svg/logo.svg) no-repeat;
 }
 </style>
