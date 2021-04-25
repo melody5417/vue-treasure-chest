@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Message } from 'element-ui';
-import { serverABaseURL } from './config';
-import * as verifyUtil from './verification';
+import { Message } from "element-ui";
+import * as verifyUtil from "./verification";
 
 /**
  * 后台服务全局字段规定:
@@ -15,54 +14,63 @@ import * as verifyUtil from './verification';
 
 // 创建一个axios实例
 const service = axios.create({
-  baseURL: serverABaseURL(),  // 默认baseURL
   withCredentials: true, // 跨域请求时发送cookie
-  timeout: 5000,
+  timeout: 5000
 });
+
+// nodejs中使用http， browser中使用默认xhr
+if (typeof global !== undefined) {
+  service.defaults.adapter = require("axios/lib/adapters/http");
+}
 
 // 请求拦截器
 service.interceptors.request.use(
-  (config) => {
+  config => {
     // 在发送请求之前做一些处理
+
     const { data = {}, headers = {} } = config;
-    // 1.装配 appId
+    // 装配 baseURL
+    const baseURL = verifyUtil.getBaseURL(config.baseURLType);
+    // 装配 appId
     data.appId = verifyUtil.getAppId();
-    // 2.装配请求 Id
+    // 装配请求 Id
     data._requestId = verifyUtil.getRequestId();
-    // 3.装配请求 token
+    // 装配请求 token
     data._token = verifyUtil.getUserToken();
-    // 4.装配时间参数 _t
+    // 装配时间参数 _t
     data._t = verifyUtil.getTime();
-    // 5.装配验证参数 _checksum
+    // 装配验证参数 _checksum
     headers._checksum = verifyUtil.getVerificationParams(config.data);
-    Object.assign(config, {headers}, {data})
+    Object.assign(config, { baseURL }, { headers }, { data });
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
   }
 );
 
 // 响应拦截器
 service.interceptors.response.use(
-  (response) => {
+  response => {
     const res = response.data;
     const { errCode, errMsg } = res;
 
     if (errCode !== 0) {
       Message({
-        message: errMsg || 'Error',
-        type: 'error',
+        message: errMsg || "Error",
+        type: "error",
         duration: 3 * 1000
       });
-      return Promise.reject(new Error(`errCode: ${errCode}, errMsg: ${errMsg || 'Internal error'}`));
+      return Promise.reject(
+        new Error(`errCode: ${errCode}, errMsg: ${errMsg || "Internal error"}`)
+      );
     }
     return res;
   },
-  (error) => {
+  error => {
     Message({
       message: error.message,
-      type: 'error',
+      type: "error",
       duration: 5 * 1000
     });
     return Promise.reject(error);

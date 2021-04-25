@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { getARequest } from '../utils/request/example';
 export default {
   name: 'Blog',
   components: {
@@ -22,6 +23,10 @@ export default {
       console.log('组件内守卫 beforeRouteEnter next 回调');
       vm.name = to.query.name;
     });
+  },
+  mounted() {
+    console.log('blog mounted');
+    getARequest({key: 'value'});
   }
 };
 </script>
