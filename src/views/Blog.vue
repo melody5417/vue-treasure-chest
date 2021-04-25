@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getARequest } from '../utils/request/example';
+import { getARequest } from '../utils/request/api';
 export default {
   name: 'Blog',
   components: {

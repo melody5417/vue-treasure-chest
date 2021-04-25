@@ -7,11 +7,15 @@
 
 <script>
 import Header from '@component/layout/Header';
+import { syncServerTime } from './utils/request/sync';
 
 export default {
   name: 'App',
   components: {
     Header
+  },
+  mounted() {
+    syncServerTime();
   }
 };
 </script>

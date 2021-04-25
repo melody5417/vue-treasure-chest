@@ -1,8 +1,6 @@
 /**
  * @Description: 请求校验参数获取方法
  */
-"use strict";
-
 import md5 from "md5";
 import { v4 as uuidv4 } from "uuid";
 import { serverABaseURL, serverBBaseURL } from "./config";
@@ -10,12 +8,29 @@ import { serverABaseURL, serverBBaseURL } from "./config";
 // 前后端约定应用标识字符串
 const skey = "XXX";
 
+// 前后端同步的时间戳差值
+let syncDeltaTime; 
+
 /**
- * 获得后台请求时间参数
- *
+ * 设置服务器和本地的时间差 
+ * deltaTime = serverTime - localTime
+ * 
+ * @param {number} time  服务器和本地的时间差 
+ */
+export function setSyncDeltaTime(time) {
+  if (typeof time === 'number') {
+    syncDeltaTime = time;
+  }
+}
+
+/**
+ * 获得请求时间参数， 优先使用服务器时间
+ * 
  */
 export function getTime() {
-  // todo 应该用后台时间
+  if (syncDeltaTime) {
+    return String(Date.now() + syncDeltaTime);
+  }
   return String(Date.now());
 }
 
@@ -38,7 +53,7 @@ export function getVerificationParams(data) {
 }
 
 /**
- * 获取请求域名
+ * 获取请求域名, 返回指定type类型的完整域名地址
  *
  * @param {String} type 域名类型, 默认为 A 类型
  * @returns {String} 返回 type 对应的 baseURL
@@ -66,7 +81,7 @@ export function getRequestId() {
  * @returns {string} appId
  */
 export function getAppId() {
-  return "cookie.appId";
+  return "cookie.appId"; // cookie 操作延迟多, 改为vuex也可
 }
 
 /**
@@ -75,5 +90,5 @@ export function getAppId() {
  * @returns {string} userToken
  */
 export function getUserToken() {
-  return "cookie.token"; // cookie 操作延迟多吗？
+  return "cookie.token"; // cookie 操作延迟多, 改为vuex也可
 }
